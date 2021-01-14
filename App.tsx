@@ -14,6 +14,16 @@ declare const global: {HermesInternal: null | {}};
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {configureStore} from '@reduxjs/toolkit';
+import rootReducer from './src/reducers';
+import {Provider, useDispatch} from 'react-redux';
+
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const Stack = createStackNavigator();
 
@@ -23,27 +33,33 @@ export type RootStackParamList = {
     name: string;
   };
 };
-
+// tabs
+import Tabs from './src/navigation/Tabs';
 // component
-import HomeScreen from './src/screen/Home';
 import ProfileScreen from './src/screen/Profile';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Food Delivery'}}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{title: 'Food Delivery Profile'}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <Stack.Screen
+            name="Home"
+            component={Tabs}
+            options={{title: 'Food Delivery'}}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{title: 'Food Delivery Profile'}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

@@ -20,7 +20,7 @@ const Profile = (props: Props) => {
   const {navigation, route} = props;
   return (
     <View style={styles.wrapper}>
-      <Text>{route.name}</Text>
+      <Text>{route.params.name}</Text>
       <Button
         title="Back to Home Page"
         onPress={() => navigation.navigate('Home')}
