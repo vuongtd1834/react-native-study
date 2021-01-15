@@ -14,6 +14,7 @@ export const COLORS = {
   lightGray2: '#F6F6F7',
   lightGray3: '#EFEFF1',
   lightGray4: '#F8F8F9',
+  lightGray5: '#fffaf0',
   transparent: 'transparent',
   darkGray: '#898C95',
 };
