@@ -9,6 +9,7 @@ type ProfileScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Profile'
 >;
+
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
 
 interface Props {

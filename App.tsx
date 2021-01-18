@@ -32,11 +32,15 @@ export type RootStackParamList = {
   Profile: {
     name: string;
   };
+  Restaurant: any;
 };
+
 // tabs
 import Tabs from './src/navigation/Tabs';
+
 // component
 import ProfileScreen from './src/screen/Profile';
+import RestaurantScreen from './src/screen/Restaurant';
 
 const App = () => {
   return (
@@ -51,6 +55,11 @@ const App = () => {
             name="Home"
             component={Tabs}
             options={{title: 'Food Delivery'}}
+          />
+          <Stack.Screen
+            name="Restaurant"
+            component={RestaurantScreen}
+            options={{title: 'Restaurant'}}
           />
           <Stack.Screen
             name="Profile"

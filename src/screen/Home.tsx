@@ -27,6 +27,14 @@ interface Props {
   fetchHome: Function;
 }
 
+export interface ICurrentLocation {
+  streetName: string;
+  gps: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
 const initialCurrentLocation = {
   streetName: 'Mễ Trì',
   gps: {
@@ -35,11 +43,37 @@ const initialCurrentLocation = {
   },
 };
 
-type CategoryProp = {
+export interface CategoryProp {
   id: number;
   name: string;
   icon: ImageSourcePropType;
-};
+}
+
+export interface RestaurantListProp {
+  id: number;
+  name: string;
+  rating: number;
+  categories: number[];
+  priceRating: number;
+  photo: ImageSourcePropType;
+  duration: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  courier: {
+    avatar: ImageSourcePropType;
+    name: string;
+  };
+  menu: Array<{
+    menuId: number;
+    name: string;
+    photo: ImageSourcePropType;
+    description: string;
+    calories: number;
+    price: number;
+  }>;
+}
 
 const Home = (props: Props) => {
   const {navigation} = props;
@@ -66,6 +100,16 @@ const Home = (props: Props) => {
     );
     setRestaurants(restaurantList);
     setSelectedCategory(item);
+  };
+
+  const getCategoryNameById = (id: number) => {
+    let cate = categories.filter((a) => a.id === id);
+
+    if (cate.length > 0) {
+      return cate[0].name;
+    }
+
+    return '';
   };
 
   const renderHeader = () => {
@@ -126,7 +170,7 @@ const Home = (props: Props) => {
       );
     };
     return (
-      <View style={{padding: SIZES.padding * 2}}>
+      <View style={{padding: SIZES.padding * 2, flex: 1}}>
         <Text style={{...FONTS.h1}}>Main</Text>
         <Text style={{...FONTS.h1}}>Categories</Text>
         <FlatList
@@ -142,7 +186,7 @@ const Home = (props: Props) => {
   };
 
   const renderRestaurantList = () => {
-    const renderItem = ({item}) => (
+    const renderItem = (item: RestaurantListProp) => (
       <TouchableOpacity
         style={{marginBottom: SIZES.padding * 2}}
         onPress={() =>
@@ -215,7 +259,7 @@ const Home = (props: Props) => {
                   <Text style={{...FONTS.body3}}>
                     {getCategoryNameById(categoryId)}
                   </Text>
-                  <Text style={{...FONTS.h3, color: COLORS.darkgray}}> . </Text>
+                  <Text style={{...FONTS.h3, color: COLORS.darkGray}}> . </Text>
                 </View>
               );
             })}
@@ -229,7 +273,7 @@ const Home = (props: Props) => {
                   color:
                     priceRating <= item.priceRating
                       ? COLORS.black
-                      : COLORS.darkgray,
+                      : COLORS.darkGray,
                 }}>
                 $
               </Text>
@@ -240,15 +284,17 @@ const Home = (props: Props) => {
     );
 
     return (
-      <FlatList
-        data={restaurants}
-        keyExtractor={(item) => `${item.id}`}
-        renderItem={renderItem}
-        contentContainerStyle={{
-          paddingHorizontal: SIZES.padding * 2,
-          paddingBottom: 30,
-        }}
-      />
+      <View style={{flex: 1}}>
+        <FlatList
+          data={restaurants}
+          keyExtractor={(item) => `${item.id}`}
+          renderItem={({item}) => renderItem(item)}
+          contentContainerStyle={{
+            paddingHorizontal: SIZES.padding * 2,
+            paddingBottom: 30,
+          }}
+        />
+      </View>
     );
   };
 
@@ -266,7 +312,6 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
     alignItems: 'center',
   },
   image: {
