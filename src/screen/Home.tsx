@@ -142,7 +142,12 @@ const Home = (props: Props) => {
     const renderItem = (item: CategoryProp) => {
       return (
         <TouchableOpacity
-          style={mainCategoryStyles({}).categoryItem}
+          style={
+            mainCategoryStyles({
+              selected: {id: selectedCategory.id},
+              id: item.id,
+            }).categoryItem
+          }
           onPress={() => onSelectCategory(item)}>
           <View
             style={
@@ -170,7 +175,7 @@ const Home = (props: Props) => {
       );
     };
     return (
-      <View style={{padding: SIZES.padding * 2, flex: 1}}>
+      <View style={styles.categoryWrapper}>
         <Text style={{...FONTS.h1}}>Main</Text>
         <Text style={{...FONTS.h1}}>Categories</Text>
         <FlatList
@@ -221,7 +226,7 @@ const Home = (props: Props) => {
               borderBottomLeftRadius: SIZES.radius,
               alignItems: 'center',
               justifyContent: 'center',
-              ...styles.shadow,
+              //   ...styles.shadow,
             }}>
             <Text style={{...FONTS.h4}}>{item.duration}</Text>
           </View>
@@ -284,7 +289,7 @@ const Home = (props: Props) => {
     );
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 2, flexDirection: 'column', alignSelf: 'stretch', marginBottom: SIZES.padding * 2, marginTop: SIZES.padding * 2}}>
         <FlatList
           data={restaurants}
           keyExtractor={(item) => `${item.id}`}
@@ -317,6 +322,10 @@ const styles = StyleSheet.create({
   image: {
     width: 30,
     height: 30,
+  },
+  categoryWrapper: {
+    ...padding(0, SIZES.padding * 2),
+    flex: 1,
   },
 });
 
@@ -383,7 +392,7 @@ const mainCategoryStyles = (props: mainCategoryProps) =>
       shadowOpacity: 0.1,
       shadowRadius: 3,
       elevation: 1,
-      height: 100,
+      height: 98,
     },
     imageWrapper: {
       width: 50,
